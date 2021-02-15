@@ -1,0 +1,61 @@
+@startuml
+participant Starter
+participant Vehicle
+participant Trip
+participant Time
+participant Station
+participant Route
+participant StatisticsModule
+
+loop numberStation
+Starter -> Station : initialize(parameters)
+end loop
+loop for all routes
+   Starter -> Route : initialize(stations)
+end loop
+loop numberVehicles
+Starter -> Vehicle : initialize(paramaters)
+end loop
+loop numberVehicles
+    Starter -> Vehicle : start()
+    Vehicle -> Starter : ok
+end loop
+loop simulationActive
+Vehicle -> Trip : createTip(oposite direction, name, route, vehicle)
+Trip -->> Vehicle : trip
+== Register trip ==
+loop all stations of trip
+    Vehicle -> Station : registerPlannedSchedule(trip, self)
+    Station -> Station : registerPlannedArrival()
+    Station -> Station : registerPlannedDeparture()
+end loop
+== Do next Trip ==
+loop for all stations of currentRoute in direction
+    Vehicle -> Route : getNextStation()
+    Route -->> Vehicle : station
+    Vehicle -> Station : register(vehicle)
+    Station -> Station : updateArrivalAndDeparture()
+    Station -->> Vehicle : void
+    loop hasToWait
+        Vehicle -> Station : canDepart
+        Station -> Station : canDepart = checkIfNeedsToWait()
+        Station -->> Vehicle : canDepart
+    end loop
+    Vehicle ->> StatisticsModule : reportWaitingTime(waitingTime, self, tripCount)
+    StatisticsModule -->> Vehicle
+    StatisticsModule -> StatisticsModule : addWaitingTimeToData(waitingTime)
+    Vehicle -> Station : unregister(self)
+    Station -->> Vehicle : delay
+    Vehicle -> Vehicle : addDelay
+    Vehicle ->> StatisticsModule : reportDelay()
+    StatisticsModule -->> Vehicle
+    StatisticsModule -> StatisticsModule : registerDelay(vehicle)
+    Vehicle -> Vehicle : sleep (simulate traveling)
+end loop
+end loop
+Starter -> Vehicle : killAll
+Starter -> StatisticsModule : printData()
+StatisticsModule -> StatisticsModule : writeDataToFile()
+StatisticsModule -->> Starter
+
+@enduml

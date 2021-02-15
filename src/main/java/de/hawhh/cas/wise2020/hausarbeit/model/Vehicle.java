@@ -27,7 +27,7 @@ public class Vehicle {
 
     private int direction = 0;
 
-    private int DEVIATION_THRESHHOLD;
+    private int DEVIATION_THRESHOLD = 300; // 5 minutes is default
 
 
     public void doNextAction() {

@@ -2,12 +2,14 @@ package de.hawhh.cas.wise2020.hausarbeit.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 import java.util.Map;
 
 @Builder
 @Data
+@EqualsAndHashCode(of = {"from", "to"})
 public class Link {
 
     private final int CAPACITY;
@@ -35,6 +37,6 @@ public class Link {
     }
 
     public boolean canProceedToNextStation(Vehicle vehicle){
-        return vehicles.get(0).equals(vehicle) && to.hasCapacity();
+        return vehicles.get(0).getName().equals(vehicle.getName()) && to.hasCapacity();
     }
 }

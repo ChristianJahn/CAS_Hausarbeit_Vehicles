@@ -2,11 +2,13 @@ package de.hawhh.cas.wise2020.hausarbeit.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
 @Builder
+@EqualsAndHashCode
 public class Line {
 
     private String name;
@@ -28,15 +30,15 @@ public class Line {
     }
 
     public Link getNextLinkB(Station currentStation) {
-        return linksDirectionA.stream()
-                .filter(l -> l.getFrom().equals(currentStation))
+        return linksDirectionB.stream()
+                .filter(l -> l.getFrom().getName().equals(currentStation.getName()))
                 .findFirst()
                 .orElse(null);
     }
 
     public Link getNextLinkA(Station currentStation) {
-        return linksDirectionB.stream()
-                .filter(l -> l.getFrom().equals(currentStation))
+        return linksDirectionA.stream()
+                .filter(l -> l.getFrom().getName().equals(currentStation.getName()))
                 .findFirst()
                 .orElse(null);
     }

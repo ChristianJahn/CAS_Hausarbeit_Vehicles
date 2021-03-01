@@ -2,6 +2,7 @@ package de.hawhh.cas.wise2020.hausarbeit.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,10 @@ public class Journey {
     private boolean isDeparture = true;
 
     private List<Map<Station, LocalDateTime>> timetable;
+
+    private Station from;
+
+    private Station to;
 
 
 }

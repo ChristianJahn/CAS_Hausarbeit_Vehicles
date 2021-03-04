@@ -18,9 +18,19 @@ public class Journey {
 
     private List<Map<Station, LocalDateTime>> timetable;
 
+    private int stationPointer = 0;
+
     private Station from;
 
     private Station to;
 
+
+    public Map<Station, LocalDateTime> getNextTimetableTime(){
+        return timetable.get(stationPointer);
+    }
+
+    public void arrived(){
+        stationPointer++;
+    }
 
 }

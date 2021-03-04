@@ -7,6 +7,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.Random;
+
 @Data
 @Builder
 @Slf4j
@@ -30,19 +35,35 @@ public class Vehicle {
 
     private Schedule schedule;
 
+    private LocalDateTime currentStationArrivalTime;
+
     private int direction = 0;
 
     private int traveledTime = 0;
 
+    private int dwellTime = 60;
+
     private int DEVIATION_THRESHOLD = 300; // 5 minutes is default
+
+    private int remainingWaitingTime = 0;
+
+    private int holdingTime = 0;
+
+    private int optimalHeadway;
+
+    public void init(){
+
+    }
 
 
     public void doNextAction() {
+        Strategy strategyToTake = decideOnStrategy();
+        if(holdingTime > 0) holdingTime--;
         if(state.equals(State.ON_STOP)){ // is on a station
-
-            if(schedule.canProceedFromStop(time.getCurrentTime(), currentStation)) { // check if the time has come
+            if(remainingWaitingTime <= 0) { // check if the time has come
                 Link nextLink = direction == 0 ? line.getNextLinkA(currentStation) : line.getNextLinkB(currentStation);
-                if (nextLink.hasCapacity()) {
+                if (nextLink.hasCapacity() && holdingTime == 0) {
+                    dwellTime = 0;
                     this.deviation = schedule.calcDeviation(currentStation, time);
                     currentStation.unregister(this);
                     nextLink.goToLink(this);
@@ -60,9 +81,14 @@ public class Vehicle {
                 currentLink.unregisterFirst();
                 currentStation = nextStation;
                 state = State.ON_STOP;
+                this.dwellTime = currentStation.getWaitingTimeInSeconds();
+                if(new Random().nextBoolean()){
+                    dwellTime *= 1.2;
+                }
+                remainingWaitingTime = schedule.getPlannedWaitingTime(time.getCurrentTime(), currentStation);
                 currentStation.register(this);
                 schedule.arrived();
-                log.info("Vehicle {} arrived at station {} planned: {} actual {}", name, nextStation.getName(), schedule.getCurrentJourney().getTimetable().get(0).get(nextStation), time.getCurrentTime());
+                log.info("Vehicle {} arrived at station {} planned: {} actual {}", name, nextStation.getName(), schedule.getCurrentJourney().getNextTimetableTime().get(nextStation), time.getCurrentTime());
                 if(direction == 0 && line.isAtEndA(currentStation)){
                     finishedTrip();
                 }else if (direction == 1 && line.isAtEndB(currentStation)){
@@ -79,6 +105,48 @@ public class Vehicle {
                 this.state = State.ON_STOP;
             }
         }
+    }
+
+    private Strategy decideOnStrategy() {
+        Strategy strategy = null;
+        if(deviation > 60){
+            //Holding is no option
+            // Skip stop comes into concideration
+        }else if(state.equals(State.ON_STOP) && !isAtEnd(direction, currentStation) && !isAtStart(direction, currentStation)){
+            // hold tactic only makes sense on stops
+            // On last stop it would only block traffic
+            strategy = Strategy.HOLD_TACT;
+           Long headwayHoldingTime = calculateHeadwayHoldingTime();
+           Long succeededHoldingTime = calculateSucceededHoldingTime();
+           Long timeToProceed = Math.max(Math.min(headwayHoldingTime, succeededHoldingTime), currentStationArrivalTime.plusSeconds(dwellTime).toEpochSecond(ZoneOffset.UTC));
+           holdingTime = (int) ChronoUnit.SECONDS.between(time.getCurrentTime(),  LocalDateTime.ofEpochSecond(timeToProceed, 0, ZoneOffset.UTC));
+        }
+        return strategy;
+    }
+
+    private boolean isAtStart(int direction, Station currentStation) {
+        if(direction == 0){
+            return line.isAtEndB(currentStation);
+        }else {
+            return line.isAtEndA(currentStation);
+        }
+    }
+
+    private boolean isAtEnd(int direction, Station currentStation) {
+        if(direction == 0){
+            return line.isAtEndA(currentStation);
+        }else {
+            return line.isAtEndB(currentStation);
+        }
+    }
+
+    private Long calculateSucceededHoldingTime() {
+        return 0L;
+    }
+
+    private Long calculateHeadwayHoldingTime() {
+        Long scheduledArrivalTimeNextVehicle = line.getNextSheduledArrival(currentStation, schedule, this);
+        return scheduledArrivalTimeNextVehicle;
     }
 
     private void finishedTrip(){

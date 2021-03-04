@@ -1,17 +1,74 @@
 {
+  "runtimeHours": 24,
   "stations": [
-
-  ],
-
-  "network": [
-
-  ],
-  "routes": [
-
-  ],
-  "vehicles": [
     {
-
+      "id": 1,
+      "name": "Hauptbahnhof-Gleis3",
+      "capacity": 2,
+      "defaultWaitingTime": 60,
+      "turnAllowed": true
+    },
+    {
+      "id": 2,
+      "name": "Station2",
+      "capacity": 1,
+      "defaultWaitingTime": 30,
+      "turnAllowed": false
+    },
+    {
+      "id": 3,
+      "name": "Station3",
+      "capacity": 1,
+      "defaultWaitingTime": 30,
+      "turnAllowed": true
     }
-  ]
+  ],
+  "links": [
+    {
+      "id": 1,
+      "from": 1,
+      "to": 2,
+      "distance": 300,
+      "capacity": 10
+    },
+    {
+      "id": 2,
+      "from": 2,
+      "to": 3,
+      "distance": 300,
+      "capacity": 10
+    },
+    {
+      "id": 3,
+      "from": 3,
+      "to": 2,
+      "distance": 300,
+      "capacity": 10
+    },
+    {
+      "id": 4,
+      "from": 2,
+      "to": 1,
+      "distance": 300,
+      "capacity": 10
+    }
+  ],
+  "lines": [
+    {
+      "name": "A",
+      "id": 1,
+      "vehicleConfig":  {
+        "distance": 60,
+        "pauseTime": 300,
+
+      },
+      "linksDirectionA": [
+        1,2
+      ],
+      "linksDirectionB": [
+        3,4
+      ],
+      "pauseTime": 300
+    }
+  ],
 }

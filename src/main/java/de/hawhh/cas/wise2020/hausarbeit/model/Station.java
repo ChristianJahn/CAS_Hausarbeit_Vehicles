@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,12 @@ public class Station {
     private final int waitingTimeInSeconds;
 
     private List<Vehicle> vehiclesInStation;
+
+    private Map<Line, Long> waitingTimeByLine;
+
+    private Map<Line, Map<LocalDateTime, Long>> waitingTimeHistory;
+
+    private LocalDateTime arrivalTimePreviousVehicle;
 
     private Map<Vehicle, Integer> deviationByVehicle;
 

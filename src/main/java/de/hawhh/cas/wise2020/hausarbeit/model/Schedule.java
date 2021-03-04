@@ -17,6 +17,8 @@ import java.util.Map;
 @Slf4j
 public class Schedule {
 
+    private int id;
+
     private List<Journey> journeyList;
 
     private Journey currentJourney;
@@ -63,27 +65,40 @@ public class Schedule {
     }
 
     public boolean canProceedFromStop(LocalDateTime currentTime, Station currentStation) {
-       LocalDateTime departure = currentJourney.getTimetable().get(0).get(currentStation);
+       LocalDateTime departure = currentJourney.getNextTimetableTime().get(currentStation);
        return departure.isEqual(currentTime) || departure.isBefore(currentTime);
     }
 
+
+
     public int calcDeviation(Station currentStation, Time time) {
-        log.info("Deviation {} and planned {}", time.getCurrentTime(), this.currentJourney.getTimetable().get(0).get(currentStation));
-        return (int) ChronoUnit.SECONDS.between( this.currentJourney.getTimetable().get(0).get(currentStation), time.getCurrentTime());
+        log.info("Deviation {} and planned {}", time.getCurrentTime(), this.currentJourney.getNextTimetableTime().get(currentStation));
+        return (int) ChronoUnit.SECONDS.between( this.currentJourney.getNextTimetableTime().get(currentStation), time.getCurrentTime());
     }
 
 
     public void arrived() {
-        this.currentJourney.getTimetable().remove(0);
+        this.currentJourney.arrived();
     }
 
     public boolean canAttendJourney(Time time, Station station) {
-        LocalDateTime departure = currentJourney.getTimetable().get(0).get(station);
+        LocalDateTime departure = currentJourney.getNextTimetableTime().get(station);
         return ChronoUnit.SECONDS.between(departure, time.getCurrentTime()) <= 1 || departure.isBefore(time.getCurrentTime());
     }
 
     public void finishedJourney() {
-        this.journeyList.remove(0);
-        this.currentJourney = journeyList.get(0);
+        this.currentJourney = journeyList.get(++currentJourneyPointer);
+    }
+
+    public Station getNextStation() {
+        return getCurrentJourney().getNextTimetableTime().keySet().stream().findAny().orElse(null);
+    }
+
+    public LocalDateTime getEstimatedDeparture() {
+    }
+
+    public int getPlannedWaitingTime(LocalDateTime currentTime, Station currentStation) {
+        LocalDateTime departure = currentJourney.getNextTimetableTime().get(currentStation);
+        return (int) ChronoUnit.SECONDS.between(currentTime, departure);
     }
 }

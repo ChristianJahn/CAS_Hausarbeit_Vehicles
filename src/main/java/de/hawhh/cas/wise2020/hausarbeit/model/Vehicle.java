@@ -16,6 +16,7 @@ import java.util.Random;
 @Builder
 @Slf4j
 @EqualsAndHashCode(of = {"name"})
+@ToString(of = {"name", "deviation"})
 public class Vehicle {
     private Strategy strategy;
 
@@ -57,21 +58,25 @@ public class Vehicle {
 
 
     public void doNextAction() {
-        Strategy strategyToTake = decideOnStrategy();
+        //decideOnStrategy();
         if(holdingTime > 0) holdingTime--;
         if(state.equals(State.ON_STOP)){ // is on a station
+            remainingWaitingTime--;
             if(remainingWaitingTime <= 0) { // check if the time has come
                 Link nextLink = direction == 0 ? line.getNextLinkA(currentStation) : line.getNextLinkB(currentStation);
-                if (nextLink.hasCapacity() && holdingTime == 0) {
+                if (nextLink.hasCapacity() && holdingTime <= 0) {
                     dwellTime = 0;
                     this.deviation = schedule.calcDeviation(currentStation, time);
                     currentStation.unregister(this);
                     nextLink.goToLink(this);
-                    log.info("Vehicle {} departs from stop (allowed) {} on link from {} to {} with capacity {} and has deviation {}", this.name,
+                    log.info("Vehicle {} departs from stop (allowed) {} on link from {} to {} with capacity {} and has deviation {} (planned {} actual {})", this.name,
                             currentStation.getName(),
-                            nextLink.getFrom().getName(), nextLink.getTo().getName(), nextLink.getCAPACITY() - nextLink.getVehicles().size(), deviation);
+                            nextLink.getFrom().getName(), nextLink.getTo().getName(), nextLink.getCAPACITY() - nextLink.getVehicles().size(), deviation, schedule.getCurrentJourney().getNextTimetableTime().get(currentStation), time.getCurrentTime());
                     currentLink = nextLink;
+                    schedule.departed();
                     state = State.TRAVELING;
+                }else if(!nextLink.hasCapacity() ) {
+                    log.info("Vehicle {} cannot depart due to missing capacity");
                 }
             }
         }else if(state.equals(State.TRAVELING)){ // Is on a trip
@@ -81,28 +86,43 @@ public class Vehicle {
                 currentLink.unregisterFirst();
                 currentStation = nextStation;
                 state = State.ON_STOP;
-                this.dwellTime = currentStation.getWaitingTimeInSeconds();
+                currentStationArrivalTime = time.getCurrentTime();
+                this.dwellTime = currentStation.getWaitingTimeInSeconds() ;
                 if(new Random().nextBoolean()){
                     dwellTime *= 1.2;
                 }
-                remainingWaitingTime = schedule.getPlannedWaitingTime(time.getCurrentTime(), currentStation);
                 currentStation.register(this);
                 schedule.arrived();
-                log.info("Vehicle {} arrived at station {} planned: {} actual {}", name, nextStation.getName(), schedule.getCurrentJourney().getNextTimetableTime().get(nextStation), time.getCurrentTime());
                 if(direction == 0 && line.isAtEndA(currentStation)){
                     finishedTrip();
                 }else if (direction == 1 && line.isAtEndB(currentStation)){
                    finishedTrip();
                 }
+                if(!state.equals(State.PAUSE)) {
+                    log.info("Vehicle {} arrived at station {} planned: {} actual {}", name, nextStation.getName(), schedule.getCurrentJourney().getNextTimetableTime().get(nextStation), time.getCurrentTime());
+                    remainingWaitingTime = schedule.getPlannedWaitingTime(time.getCurrentTime(), currentStation);
+                    if(remainingWaitingTime < dwellTime){
+                        remainingWaitingTime = dwellTime;
+                    }
+                }
             }
             traveledTime++;
-
         }else {
             if(currentStation == null){
                 currentStation = schedule.getJourneyList().get(0).getFrom();
             }
             if(schedule.canAttendJourney(time, currentStation)){
                 this.state = State.ON_STOP;
+                if(direction == 0){
+                    this.line.getVehiclesOnLineA().add(this);
+                }else {
+                    this.line.getVehiclesOnLineB().add(this);
+                }
+                remainingWaitingTime = schedule.getPlannedWaitingTime(time.getCurrentTime(), currentStation);
+                this.dwellTime = currentStation.getWaitingTimeInSeconds();
+                if(remainingWaitingTime < dwellTime){
+                    remainingWaitingTime = dwellTime;
+                }
             }
         }
     }
@@ -118,8 +138,10 @@ public class Vehicle {
             strategy = Strategy.HOLD_TACT;
            Long headwayHoldingTime = calculateHeadwayHoldingTime();
            Long succeededHoldingTime = calculateSucceededHoldingTime();
-           Long timeToProceed = Math.max(Math.min(headwayHoldingTime, succeededHoldingTime), currentStationArrivalTime.plusSeconds(dwellTime).toEpochSecond(ZoneOffset.UTC));
-           holdingTime = (int) ChronoUnit.SECONDS.between(time.getCurrentTime(),  LocalDateTime.ofEpochSecond(timeToProceed, 0, ZoneOffset.UTC));
+           if(headwayHoldingTime != null && succeededHoldingTime != null) {
+               Long timeToProceed = Math.max(Math.min(headwayHoldingTime, succeededHoldingTime), currentStationArrivalTime.plusSeconds(dwellTime).toEpochSecond(ZoneOffset.UTC));
+               holdingTime = (int) ChronoUnit.SECONDS.between(time.getCurrentTime(),  LocalDateTime.ofEpochSecond(timeToProceed, 0, ZoneOffset.UTC));
+           }
         }
         return strategy;
     }
@@ -154,6 +176,11 @@ public class Vehicle {
         this.state = State.PAUSE;
         schedule.finishedJourney();
         currentStation.unregister(this);
+        if(direction == 0){
+            line.getVehiclesOnLineA().remove(this);
+        }else {
+            line.getVehiclesOnLineB().remove(this);
+        }
         direction = direction == 0 ? 1 : 0;
     }
 }

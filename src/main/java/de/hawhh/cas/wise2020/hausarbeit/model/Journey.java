@@ -30,7 +30,14 @@ public class Journey {
     }
 
     public void arrived(){
-        stationPointer++;
+        if(stationPointer < timetable.size() - 1) {
+            stationPointer++;
+        }
     }
 
+    public void departed() {
+        if(stationPointer < timetable.size() - 1) {
+            stationPointer++;
+        }
+    }
 }

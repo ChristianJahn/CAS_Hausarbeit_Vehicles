@@ -65,7 +65,7 @@ public class Line {
             positionOfVehicle = vehiclesOnLineB.indexOf(vehicle);
         }
         if(positionOfVehicle != -1 && positionOfVehicle != 0 && !isAtEndB(currentStation) && !isAtEndA(currentStation)){
-            Vehicle beforeVehicle = vehiclesOnLineA.get(positionOfVehicle - 1);
+            Vehicle beforeVehicle = vehiclesOnLineA.get(positionOfVehicle + 1);
             LocalDateTime estimatedArrivalTime = estimateArrival(beforeVehicle, currentStation);
             if(estimatedArrivalTime == null) return 0L;
             return estimatedArrivalTime.toEpochSecond(ZoneOffset.UTC);
@@ -75,7 +75,7 @@ public class Line {
 
     private LocalDateTime estimateArrival(Vehicle beforeVehicle, Station currentStation) {
         if(beforeVehicle.getState().equals(State.ON_STOP)){
-            LocalDateTime estimatedArrivalTime = beforeVehicle.getSchedule().getEstimatedDeparture();
+            LocalDateTime estimatedArrivalTime =time.getCurrentTime();
             Station m = beforeVehicle.getCurrentStation();
             return calculateEstimatedArrivalTime(beforeVehicle, currentStation, estimatedArrivalTime, m);
         }else if (beforeVehicle.getState().equals(State.TRAVELING)){
@@ -90,7 +90,7 @@ public class Line {
 
     private LocalDateTime calculateEstimatedArrivalTime(Vehicle beforeVehicle, Station currentStation, LocalDateTime estimatedArrivalTime, Station m) {
         Link link = getLinkFromStation(m, beforeVehicle.getDirection());
-        while(!m.equals(currentStation)){
+        while(!m.equals(currentStation) ){
             Station next = link.getTo();
             estimatedArrivalTime = estimatedArrivalTime.plusSeconds(link.getDISTANCE());
             m = next;

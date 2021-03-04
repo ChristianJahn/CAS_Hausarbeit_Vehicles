@@ -60,7 +60,7 @@
       "vehicleConfig":  {
         "distance": 60,
         "pauseTime": 300,
-
+        "
       },
       "linksDirectionA": [
         1,2

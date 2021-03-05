@@ -36,11 +36,11 @@ public class Line {
     private Station end;
 
     public boolean isAtEndA(Station currentStation){
-        return currentStation.equals(end);
+        return currentStation.equals(linksDirectionA.get(linksDirectionA.size() - 1).getTo());
     }
 
     public boolean isAtEndB(Station currentStation){
-        return currentStation.equals(start);
+        return currentStation.equals(linksDirectionB.get(linksDirectionB.size() - 1).getTo());
     }
 
     public Link getNextLinkB(Station currentStation) {

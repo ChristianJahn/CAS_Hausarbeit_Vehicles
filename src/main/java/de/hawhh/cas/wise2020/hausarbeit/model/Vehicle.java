@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.Random;
 
 @Data
@@ -36,6 +37,8 @@ public class Vehicle {
 
     private Schedule schedule;
 
+    private Map<LocalDateTime, Integer> delayOverTime;
+
     private LocalDateTime currentStationArrivalTime;
 
     private int direction = 0;
@@ -50,6 +53,8 @@ public class Vehicle {
 
     private int holdingTime = 0;
 
+    private int travelDistanceRemaining = 0;
+
     private int optimalHeadway;
 
     public void init(){
@@ -58,7 +63,7 @@ public class Vehicle {
 
 
     public void doNextAction() {
-        //decideOnStrategy();
+       // decideOnStrategy();
         if(holdingTime > 0) holdingTime--;
         if(state.equals(State.ON_STOP)){ // is on a station
             remainingWaitingTime--;
@@ -66,7 +71,7 @@ public class Vehicle {
                 Link nextLink = direction == 0 ? line.getNextLinkA(currentStation) : line.getNextLinkB(currentStation);
                 if (nextLink.hasCapacity() && holdingTime <= 0) {
                     dwellTime = 0;
-                    this.deviation = schedule.calcDeviation(currentStation, time);
+                    this.deviation = schedule.calcDeviation(currentStation, time, this);
                     currentStation.unregister(this);
                     nextLink.goToLink(this);
                     log.info("Vehicle {} departs from stop (allowed) {} on link from {} to {} with capacity {} and has deviation {} (planned {} actual {})", this.name,
@@ -74,9 +79,11 @@ public class Vehicle {
                             nextLink.getFrom().getName(), nextLink.getTo().getName(), nextLink.getCAPACITY() - nextLink.getVehicles().size(), deviation, schedule.getCurrentJourney().getNextTimetableTime().get(currentStation), time.getCurrentTime());
                     currentLink = nextLink;
                     schedule.departed();
+                    travelDistanceRemaining = currentLink.getDISTANCE();
+                    if(new Random().nextBoolean()){
+                        travelDistanceRemaining *= 2 ;
+                    }
                     state = State.TRAVELING;
-                }else if(!nextLink.hasCapacity() ) {
-                    log.info("Vehicle {} cannot depart due to missing capacity");
                 }
             }
         }else if(state.equals(State.TRAVELING)){ // Is on a trip
@@ -89,7 +96,9 @@ public class Vehicle {
                 currentStationArrivalTime = time.getCurrentTime();
                 this.dwellTime = currentStation.getWaitingTimeInSeconds() ;
                 if(new Random().nextBoolean()){
-                    dwellTime *= 1.2;
+                    dwellTime *= 2;
+                }else {
+                    dwellTime *= 0.6;
                 }
                 currentStation.register(this);
                 schedule.arrived();
@@ -118,6 +127,7 @@ public class Vehicle {
                 }else {
                     this.line.getVehiclesOnLineB().add(this);
                 }
+                currentStation.register(this);
                 remainingWaitingTime = schedule.getPlannedWaitingTime(time.getCurrentTime(), currentStation);
                 this.dwellTime = currentStation.getWaitingTimeInSeconds();
                 if(remainingWaitingTime < dwellTime){
@@ -178,8 +188,10 @@ public class Vehicle {
         currentStation.unregister(this);
         if(direction == 0){
             line.getVehiclesOnLineA().remove(this);
+            currentStation = line.getLinksDirectionB().get(0).getFrom();
         }else {
             line.getVehiclesOnLineB().remove(this);
+            currentStation = line.getLinksDirectionA().get(0).getFrom();
         }
         direction = direction == 0 ? 1 : 0;
     }

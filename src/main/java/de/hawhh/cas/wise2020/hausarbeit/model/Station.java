@@ -19,6 +19,8 @@ import java.util.Map;
 public class Station {
     private final boolean allowTurn;
 
+    private int id;
+
     private final String name;
 
     private final int capacity;
@@ -27,7 +29,7 @@ public class Station {
 
     private Time time;
 
-    private List<Line> linesDepartingFromHere;
+    private List<String> linesDepartingFromHere;
 
     private List<Vehicle> vehiclesInStation;
 
@@ -36,6 +38,8 @@ public class Station {
     private Map<LocalDateTime, Map<String, Long>> waitingTimeHistory;
 
     private LocalDateTime arrivalTimePreviousVehicle;
+
+    private int maxDeviationAdded = 0;
 
     private Map<Vehicle, Integer> deviationByVehicle;
 
@@ -55,9 +59,7 @@ public class Station {
 
     public void tick(){
         for(String line : new ArrayList<>(this.waitingTimeByLine.keySet())){
-            if(waitingTimeByLine.get(line) == null){
-                waitingTimeByLine.put(line, 0L);
-            }
+            waitingTimeByLine.putIfAbsent(line, 0L);
             Long newTime =  waitingTimeByLine.get(line) + 1;
             waitingTimeByLine.put(line,newTime);
         }

@@ -14,6 +14,8 @@ public class Link {
 
     private final int CAPACITY;
 
+    private int id;
+
     private List<Vehicle> vehicles;
 
     private final int DISTANCE;

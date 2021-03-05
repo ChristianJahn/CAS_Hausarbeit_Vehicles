@@ -36,16 +36,18 @@ public class Schedule {
                 for(Link link : route.getLinksDirectionA()){
                     time = generateSchedule(time, journey, link);
                 }
+                journey.setFrom(route.getLinksDirectionA().get(0).getFrom());
+                journey.setTo(route.getLinksDirectionA().get(route.getLinksDirectionA().size() - 1).getTo());
                 direction = 1;
             }else {
                 for(Link link : route.getLinksDirectionB()){
                     time = generateSchedule(time, journey, link);
                 }
+                journey.setFrom(route.getLinksDirectionB().get(0).getFrom());
+                journey.setTo(route.getLinksDirectionB().get(route.getLinksDirectionB().size() - 1).getTo());
                 direction = 0;
             }
             journey.setDirection(direction);
-            journey.setFrom(route.getStart());
-            journey.setTo(route.getEnd());
             this.journeyList.add(journey);
         }
         currentJourney = this.journeyList.get(currentJourneyPointer++);
@@ -72,9 +74,13 @@ public class Schedule {
 
 
 
-    public int calcDeviation(Station currentStation, Time time) {
+    public int calcDeviation(Station currentStation, Time time, Vehicle vehicle) {
         log.info("Deviation {} and planned {}", time.getCurrentTime(), this.currentJourney.getNextTimetableTime().get(currentStation));
-        return (int) ChronoUnit.SECONDS.between(  this.currentJourney.getNextTimetableTime().get(currentStation),time.getCurrentTime());
+        int deviation = (int) ChronoUnit.SECONDS.between(  this.currentJourney.getNextTimetableTime().get(currentStation),time.getCurrentTime());
+        if(deviation - vehicle.getDeviation() > currentStation.getMaxDeviationAdded()){
+            currentStation.setMaxDeviationAdded(deviation - vehicle.getDeviation() );
+        }
+        return deviation;
     }
 
 

@@ -1,0 +1,913 @@
+{
+  "runtimeHours": 24,
+  "stations": [
+    {
+      "id": 1,
+      "name": "Hamburg-Bergedorf-Gleis 4,5",
+      "capacity": 2,
+      "defaultWaitingTime": 180
+    },
+    {
+      "id": 2,
+      "name": "Hamburg-Bergedorf-Gleis 3",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 3,
+      "name": "Nettelnburg Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 4,
+      "name": "Nettelnburg Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 5,
+      "name": "Allermöhe Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 6,
+      "name": "Allermöhe Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 7,
+      "name": "Mittlerer Landweg Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 8,
+      "name": "Mittlerer Landweg Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 9,
+      "name": "Billwerder Moorflet Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 10,
+      "name": "Billwerder Moorflet Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 11,
+      "name": "Tiefstack Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 12,
+      "name": "Tiefstack Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 13,
+      "name": "Rothenburgsort Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 14,
+      "name": "Rothenburgsort Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 15,
+      "name": "Berliner Tor Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 16,
+      "name": "Berliner Tor Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 17,
+      "name": "Berliner Tor Gleis 3-5",
+      "capacity": 3,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 18,
+      "name": "Hauptbahnhof Gleis 1-2",
+      "capacity": 2,
+      "defaultWaitingTime": 180
+    },
+    {
+      "id": 19,
+      "name": "Hauptbahnhof Gleis 3-4",
+      "capacity": 2,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 20,
+      "name": "Dammtor Gleis 3",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 21,
+      "name": "Dammtor Gleis 4",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 22,
+      "name": "Sternschanze Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 23,
+      "name": "Sternschanze Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 24,
+      "name": "Holstenstraße Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 25,
+      "name": "Holstenstraße Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 26,
+      "name": "Diebsteich Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 27,
+      "name": "Diebsteich Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 28,
+      "name": "Langenfelde Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 29,
+      "name": "Langenfelde Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 30,
+      "name": "Stellingen Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 31,
+      "name": "Stellingen Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 32,
+      "name": "Eidelstedt Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 33,
+      "name": "Eidelstedt Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 34,
+      "name": "Elbgaustraße Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 35,
+      "name": "Elbgaustraße Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 36,
+      "name": "Jungfernstieg Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 37,
+      "name": "Jungfernstieg Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 38,
+      "name": "Stadthausbrücke Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 39,
+      "name": "Stadthausbrücke Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 40,
+      "name": "Landungsbrücken Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 41,
+      "name": "Landungsbrücken Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 42,
+      "name": "Reeperbahn Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 43,
+      "name": "Reeperbahn Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 44,
+      "name": "Königstraße Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 45,
+      "name": "Königstraße Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 46,
+      "name": "Altona",
+      "capacity": 4,
+      "defaultWaitingTime": 180
+    },
+    {
+      "id": 47,
+      "name": "Landwehr Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 48,
+      "name": "Landwehr Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 49,
+      "name": "Hasselbrook Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 180
+    },
+    {
+      "id": 50,
+      "name": "Hasselbrook Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 51,
+      "name": "Wandsbeker Chaussee Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 52,
+      "name": "Wandsbeker Chaussee Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 53,
+      "name": "Friedrichsberg Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 54,
+      "name": "Friedrichsberg Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 55,
+      "name": "Barmbek Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 56,
+      "name": "Barmbek Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 57,
+      "name": "Hammerbrook Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 58,
+      "name": "Hammerbrook Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 59,
+      "name": "Elbbrücken Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 60,
+      "name": "Elbbrücken Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 61,
+      "name": "Veddel Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 62,
+      "name": "Veddel Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 63,
+      "name": "Wilhelmsburg Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 64,
+      "name": "Wilhelmsburg Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 120
+    },
+    {
+      "id": 65,
+      "name": "Harburg Gleis 1",
+      "capacity": 1,
+      "defaultWaitingTime": 180
+    },
+    {
+      "id": 66,
+      "name": "Harburg Gleis 2",
+      "capacity": 1,
+      "defaultWaitingTime": 180
+    }
+
+  ],
+  "links": [
+    {
+      "id": 1,
+      "from": 1,
+      "to": 3,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 2,
+      "from": 3,
+      "to": 5,
+      "distance": 120,
+      "capacity": 1
+    },
+    {
+      "id": 3,
+      "from": 5,
+      "to": 7,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 4,
+      "from": 7,
+      "to": 9,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 5,
+      "from": 9,
+      "to": 11,
+      "distance": 180,
+      "capacity": 2
+    },
+    {
+      "id": 6,
+      "from": 11,
+      "to": 13,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 7,
+      "from": 13,
+      "to": 15,
+      "distance": 180,
+      "capacity": 1
+    },
+    {
+      "id": 8,
+      "from": 15,
+      "to": 18,
+      "distance": 180,
+      "capacity": 2
+    },
+    {
+      "id": 9,
+      "from": 18,
+      "to": 21,
+      "distance": 180,
+      "capacity": 2
+    },
+    {
+      "id": 10,
+      "from": 21,
+      "to": 22,
+      "distance": 180,
+      "capacity": 1
+    },
+    {
+      "id": 11,
+      "from": 22,
+      "to": 24,
+      "distance": 120,
+      "capacity": 1
+    },
+    {
+      "id": 12,
+      "from": 24,
+      "to": 26,
+      "distance": 180,
+      "capacity": 1
+    },
+    {
+      "id": 13,
+      "from": 26,
+      "to": 28,
+      "distance": 120,
+      "capacity": 1
+    },
+    {
+      "id": 14,
+      "from": 28,
+      "to": 30,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 15,
+      "from": 30,
+      "to": 32,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 16,
+      "from": 32,
+      "to": 34,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 17,
+      "from": 4,
+      "to": 2,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 18,
+      "from": 6,
+      "to": 4,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 19,
+      "from": 8,
+      "to": 6,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 20,
+      "from": 10,
+      "to": 8,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 21,
+      "from": 12,
+      "to": 10,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 22,
+      "from": 14,
+      "to": 12,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 23,
+      "from": 16,
+      "to": 14,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 24,
+      "from": 19,
+      "to": 16,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 25,
+      "from": 20,
+      "to": 19,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 26,
+      "from": 23,
+      "to": 20,
+      "distance": 180,
+      "capacity": 2
+    },
+    {
+      "id": 27,
+      "from": 25,
+      "to": 23,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 28,
+      "from": 27,
+      "to": 25,
+      "distance": 180,
+      "capacity": 2
+    },
+    {
+      "id": 29,
+      "from": 29,
+      "to": 27,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 30,
+      "from": 31,
+      "to": 29,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 31,
+      "from": 33,
+      "to": 31,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 32,
+      "from": 35,
+      "to": 33,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 33,
+      "from": 18,
+      "to": 36,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 34,
+      "from": 36,
+      "to": 38,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 35,
+      "from": 38,
+      "to": 40,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 36,
+      "from": 40,
+      "to": 42,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 37,
+      "from": 42,
+      "to": 44,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 38,
+      "from": 44,
+      "to": 46,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 39,
+      "from": 37,
+      "to": 19,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 40,
+      "from": 39,
+      "to": 37,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 41,
+      "from": 41,
+      "to": 39,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 42,
+      "from": 43,
+      "to": 41,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 43,
+      "from": 45,
+      "to": 43,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 44,
+      "from": 46,
+      "to": 45,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 45,
+      "from": 24,
+      "to": 46,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 46,
+      "from": 46,
+      "to": 25,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 47,
+      "from": 19,
+      "to": 47,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 48,
+      "from": 47,
+      "to": 49,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 49,
+      "from": 49,
+      "to": 51,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 50,
+      "from": 51,
+      "to": 53,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 51,
+      "from": 53,
+      "to": 55,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 52,
+      "from": 56,
+      "to": 54,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 53,
+      "from": 54,
+      "to": 52,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 54,
+      "from": 52,
+      "to": 50,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 55,
+      "from": 50,
+      "to": 48,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 56,
+      "from": 48,
+      "to": 18,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 57,
+      "from": 19,
+      "to": 57,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 58,
+      "from": 57,
+      "to": 59,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 59,
+      "from": 59,
+      "to": 61,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 60,
+      "from": 61,
+      "to": 63,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 61,
+      "from": 63,
+      "to": 65,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 62,
+      "from": 66,
+      "to": 64,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 63,
+      "from": 64,
+      "to": 62,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 64,
+      "from": 62,
+      "to": 60,
+      "distance": 120,
+      "capacity": 2
+    },
+    {
+      "id": 65,
+      "from": 60,
+      "to": 58,
+      "distance": 180,
+      "capacity": 3
+    },
+    {
+      "id": 66,
+      "from": 58,
+      "to": 18,
+      "distance": 120,
+      "capacity": 2
+    }
+  ],
+  "lines": [
+    {
+      "name": "S21",
+      "id": 1,
+      "vehicleConfig":  {
+        "distance": 600,
+        "count": 8
+      },
+      "linksDirectionA": [
+        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+      ],
+      "linksDirectionB": [
+        32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17
+      ],
+      "pauseTime": 600
+    },
+    {
+      "name": "S1",
+      "id": 2,
+      "vehicleConfig":  {
+        "distance": 600,
+        "count": 8
+      },
+      "linksDirectionA": [
+        44,43,42,41,40,39,47,48,49,50,51
+      ],
+      "linksDirectionB": [
+        52,53,54,55,56,33,34,35,36,37,38
+      ],
+      "pauseTime": 600
+    },
+    {
+      "name": "S3",
+      "id": 3,
+      "vehicleConfig":  {
+        "distance": 600,
+        "count": 8
+      },
+      "linksDirectionA": [
+        44,43,42,41,40,39, 57,58,59,60,61
+      ],
+      "linksDirectionB": [
+        62,63,64,65,66,33,34,35,36,37,38
+      ],
+      "pauseTime": 600
+    }
+  ]
+}

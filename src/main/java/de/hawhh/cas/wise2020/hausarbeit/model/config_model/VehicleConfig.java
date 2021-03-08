@@ -12,4 +12,6 @@ public class VehicleConfig {
     private Integer distance;
 
     private Integer count;
+
+    private Boolean isCooperative; 
 }

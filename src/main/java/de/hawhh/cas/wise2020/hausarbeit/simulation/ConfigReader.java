@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Getter
@@ -29,6 +28,8 @@ public class ConfigReader {
     private List<Vehicle> vehicles;
 
     private Time timeObj;
+
+    private List<Line> lines;
 
     private Config config;
 
@@ -60,7 +61,7 @@ public class ConfigReader {
                         .CAPACITY(linkConfig.getCapacity())
                         .build();
             }).collect(Collectors.toCollection(ArrayList::new));
-            List<Line> lines = config.getLines().stream().map(lineConfig -> {
+            lines = config.getLines().stream().map(lineConfig -> {
                 return Line.builder()
                         .name(lineConfig.getName())
                         .time(timeObj)
@@ -75,7 +76,18 @@ public class ConfigReader {
             vehicles = new ArrayList<>();
             config.getLines().forEach(lineConfig -> {
                 List<Vehicle> rawVehicles = generateVehicles(lineConfig.getVehicleConfig(),lineConfig, lines);
-                List<Schedule> schedules = generateSchedules(rawVehicles.size(), lineConfig, lines, config.getRuntimeHours());
+                List<Schedule> schedules = generateSchedules(rawVehicles.size(), lineConfig, lines, config.getRuntimeHours(), 0);
+                for(int i = 0; i < rawVehicles.size(); i++){
+                    rawVehicles.get(i).setSchedule(schedules.get(i));
+                }
+                vehicles.addAll(rawVehicles);
+            });
+            config.getLines().forEach(lineConfig -> {
+                List<Vehicle> rawVehicles = generateVehicles(lineConfig.getVehicleConfig(),lineConfig, lines);
+                for (Vehicle rawVehicle : rawVehicles) {
+                    rawVehicle.setDirection(1);
+                }
+                List<Schedule> schedules = generateSchedules(rawVehicles.size(), lineConfig, lines, config.getRuntimeHours(), 1);
                 for(int i = 0; i < rawVehicles.size(); i++){
                     rawVehicles.get(i).setSchedule(schedules.get(i));
                 }
@@ -96,14 +108,14 @@ public class ConfigReader {
         }
     }
 
-    private List<Schedule> generateSchedules(int size, LineConfig lineConfig, List<Line> lines, Integer runtimeHours) {
+    private List<Schedule> generateSchedules(int size, LineConfig lineConfig, List<Line> lines, Integer runtimeHours, int startDirection) {
         List<Schedule> schedules = new ArrayList<>();
         Line correctLine = lines.stream().filter(l -> l.getName().equals(lineConfig.getName())).findFirst().orElse(null);
         for(int i = 1; i <= size; i++){
-            Schedule schedule = Schedule.builder().build();
+            Schedule schedule = Schedule.builder().time(timeObj).build();
             schedule.generateSchedule(correctLine, lineConfig.getPauseTime(),
-                    (int) (runtimeHours * 60 * 0.6),
-                    timeObj.getCurrentTime().plusSeconds(i * lineConfig.getVehicleConfig().getDistance()));
+                    (int) (8024),
+                    timeObj.getCurrentTime().plusSeconds(i * lineConfig.getVehicleConfig().getDistance()), startDirection);
             schedules.add(schedule);
         }
         return schedules;
@@ -114,7 +126,8 @@ public class ConfigReader {
         Line correctLine = lines.stream().filter(l -> l.getName().equals(lineConfig.getName())).findFirst().orElse(null);
         for(int i = 0; i < vehicleConfig.getCount(); i++){
             assert correctLine != null;
-            result.add(Vehicle.builder().name("FZ_"+(i+1)+"_L"+correctLine.getName()).time(timeObj).line(correctLine).state(State.PAUSE).build());
+            result.add(Vehicle.builder().cooperative(lineConfig.getVehicleConfig().getIsCooperative())
+                    .plannedHeadway(lineConfig.getVehicleConfig().getDistance()).name("FZ_"+(vehicles.size() + i+1)+"_L"+correctLine.getName()).time(timeObj).line(correctLine).state(State.PAUSE).build());
         }
         return result;
     }

@@ -23,15 +23,19 @@ public class Schedule {
 
     private Journey currentJourney;
 
+    private Time time;
+
+    private Map<Station, LocalDateTime> lastArrival;
+
     private int currentJourneyPointer = 0;
 
-    public void generateSchedule(Line route, int pauseTime, int journeys, LocalDateTime startTime){
+    public void generateSchedule(Line route, int pauseTime, int journeys, LocalDateTime startTime, int directionStart){
         LocalDateTime time = startTime;
         journeyList = new ArrayList<>();
-        int direction = 0;
+        int direction = directionStart;
         for(int i = 0; i < journeys; i++){
             if(!journeyList.isEmpty()) time = time.plusSeconds(pauseTime);
-            Journey journey = Journey.builder().timetable(new ArrayList<>()).build();
+            Journey journey = Journey.builder().direction(direction).timetable(new ArrayList<>()).build();
             if(direction == 0){
                 for(Link link : route.getLinksDirectionA()){
                     time = generateSchedule(time, journey, link);
@@ -47,7 +51,6 @@ public class Schedule {
                 journey.setTo(route.getLinksDirectionB().get(route.getLinksDirectionB().size() - 1).getTo());
                 direction = 0;
             }
-            journey.setDirection(direction);
             this.journeyList.add(journey);
         }
         currentJourney = this.journeyList.get(currentJourneyPointer++);
@@ -75,7 +78,6 @@ public class Schedule {
 
 
     public int calcDeviation(Station currentStation, Time time, Vehicle vehicle) {
-        log.info("Deviation {} and planned {}", time.getCurrentTime(), this.currentJourney.getNextTimetableTime().get(currentStation));
         int deviation = (int) ChronoUnit.SECONDS.between(  this.currentJourney.getNextTimetableTime().get(currentStation),time.getCurrentTime());
         if(deviation - vehicle.getDeviation() > currentStation.getMaxDeviationAdded()){
             currentStation.setMaxDeviationAdded(deviation - vehicle.getDeviation() );
@@ -85,12 +87,16 @@ public class Schedule {
 
 
     public void arrived() {
+        if(lastArrival == null){
+            lastArrival = new HashMap<>();
+        }
+        this.lastArrival.put(new ArrayList<>(currentJourney.getTimetable().get(currentJourney.getStationPointer()).keySet()).get(0), time.getCurrentTime());
         this.currentJourney.arrived();
     }
 
     public boolean canAttendJourney(Time time, Station station) {
         LocalDateTime departure = currentJourney.getTimetable().get(0).get(station);
-        return ChronoUnit.SECONDS.between(departure, time.getCurrentTime()) <= 1 || departure.isBefore(time.getCurrentTime());
+        return station.hasCapacity() &&  ChronoUnit.SECONDS.between(departure, time.getCurrentTime()) <= 1  && ChronoUnit.SECONDS.between(departure, time.getCurrentTime()) >= -60|| departure.isBefore(time.getCurrentTime());
     }
 
     public void finishedJourney() {

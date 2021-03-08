@@ -9,6 +9,7 @@ import lombok.ToString;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,7 @@ public class Station {
     }
 
     public void register(Vehicle vehicle) {
-        waitingTimeHistory.put(time.getCurrentTime(), waitingTimeByLine);
+        waitingTimeHistory.put(time.getCurrentTime(), new HashMap<>(waitingTimeByLine));
         waitingTimeByLine.put(vehicle.getLine().getName(), 0L);
         vehiclesInStation.add(vehicle);
     }
